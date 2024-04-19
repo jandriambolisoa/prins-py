@@ -1,0 +1,85 @@
+#
+# This file contains the text to display for each item
+# attribute. You can edit this file to custom the way
+# Prins will show items to the user.
+#
+
+Default :
+  none:     &none     NONE
+  standby:  &standby  STANDBY
+  todo:     &todo     TODO
+  wip:      &wip      WIP
+  rev:      &rev      REVIEW
+  done:     &done     DONE
+  abort:    &abort    ABORT
+
+Category :
+  0 :   *none           #kNone
+  1 :   Prop            #kProp
+  2 :   Character       #kCharacter
+  3 :   Environment     #kEnv
+  4 :   Animal          #kAnimal
+  5 :   Nature          #kNature
+  6 :   Vehicle         #kVehicle
+
+  91 :  Short           #kShort
+  92 :  Series          #kSeries
+  93 :  Feature         #kFeature
+
+Task :
+  0 :   *none           #kNone
+  1 :   MODELING        #kModeling
+  2 :   TEXTURING       #kTexturing
+  3 :   RIGGING         #kRigging
+  4 :   SHADING         #kShading
+  5 :   SETDRESSING     #kSetDressing
+  6 :   DESIGN          #kDesign
+  
+  51 :  ANIMATION       #kAnimation
+  52 :  LIGHTING        #kLighting
+  53 :  FX              #kFX
+  54 :  CFX             #kCFX
+  55 :  COMPOSITING     #kCompositing
+  56 :  PREVIZ          #kPreviz
+  99 :  TESTING         #kTesting
+
+Status:
+  0 :   *none       #kNone
+
+  11 :  *standby    #kAssetStandBy 
+  12 :  *wip        #kAssetInProgress
+  18 :  *abort      #kAssetAbort
+  19 :  *done       #kAssetDone 
+
+  21 :  *todo       #kTaskToDo 
+  22 :  *wip        #kTaskInProgress
+  23 :  *rev        #kTaskToReview
+  28 :  *abort      #kTaskAbort 
+  29 :  *done       #kTaskDone 
+
+  31 :  *standby    #kShowStandBy
+  32 :  *wip        #kShowInProgress
+  38 :  *abort      #kShowAbort
+  39 :  *done       #kShowDone
+
+  41 :  *standby    #kEpisodeStandBy
+  42 :  *wip        #kEpisodeInProgress
+  48 :  *abort      #kEpisodeAbort
+  49 :  *done       #kEpisodeDone
+
+  51 :  *standby    #kSequenceStandBy
+  52 :  *wip        #kSequenceInProgress
+  58 :  *abort      #kSequenceAbort
+  59 :  *done       #kSequenceDone
+
+  61 :  *standby    #kShotStandBy
+  62 :  *wip        #kShotInProgress
+  68 :  *abort      #kShotAbort
+  69 :  *done       #kShotDone
+
+Rank:
+  0   :   *none       #kNone
+  1   :   Artist      #kArtist
+  2   :   Supervisor  #kSupervisor
+
+  -1  :   Admin       #kAdmin

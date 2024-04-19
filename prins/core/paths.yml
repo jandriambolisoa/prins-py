@@ -1,0 +1,114 @@
+#
+# This file contains every files and paths templates for any Prince project.
+# Variables to be substituted are between {}.
+# Prins has its own 'explorer' that allow the user to navigate through any 
+# folder in a relative way. That 'explorer' is the one doing variable substitution.
+#
+
+#
+# Some definitions :
+#   workspace = The workspace is the folder where an artist have to work locally
+#   delivery = A delivery is a video showing the work
+#
+
+#
+# Files templates
+#
+
+Files:
+    # Working file format
+    # Asset
+    mayaAsset: "{task}_{assetId}_{version}.ma"
+    houdiniAsset: "{task}_{assetId}_{version}.hip"
+    painterAsset: "{task}_{assetId}_{version}.spp"
+    guerillaAsset: "{task}_{assetId}_{version}.gproject"
+    ueAsset: "{task}_{assetId}_{version}.uproject"
+
+    # Shot
+    mayaShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.ma"
+    houdiniShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.hip"
+    guerillaShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.gproject"
+    nukeShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.nk"
+    ueShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.uproject"
+    
+
+    # Publish file format
+    # Asset
+    assetAlembic: "{task}_{assetId}_{version}.abc"
+    assetFbx: "{task}_{assetId}_{version}.fbx"
+    texturesExr: "{task}_{assetId}_{version}.{UDIM}.exr"
+    grendergraph: "{task}_{assetId}_{version}.grendergraph"
+    movAsset: "{task}_{assetId}_{version}.mov"
+    mp4Asset: "{task}_{assetId}_{version}.mp4"
+
+    # Show
+    movEpisode: "{task}_{showId}_{version}.mov"
+    mp4Episode: "{task}_{showId}_{version}.mp4"
+    # Shot
+    animFbx: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.fbx"
+    animAlembic: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.abc"
+    renderExr: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.{frame}.ma"
+    dpx: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.{frame}.dpx"
+    movShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.mov"
+    mp4Shot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.mp4"
+    # Sequence
+    movSequence: "{task}_{showId}_{episodeId}_{sequenceId}_{version}.mov"
+    mp4Sequence: "{task}_{showId}_{episodeId}_{sequenceId}_{version}.mp4"
+    # Episode
+    movEpisode: "{task}_{showId}_{episodeId}_{version}.mov"
+    mp4Episode: "{task}_{showId}_{episodeId}_{version}.mp4"
+
+#
+# Folder templates
+#
+
+Asset:
+    parent: "{projectRoot}/Assets"
+    root: "{projectRoot}/Assets/{assetId}"
+    id: "{projectRoot}/Assets/{assetId}/id.json"
+    task: "{projectRoot}/Assets/{assetId}/{task}"
+    workspace: "{projectRoot}/Assets/{assetId}/{task}/{dcc}"
+    publishs: "{projectRoot}/Assets/{assetId}/{task}/publishs"
+    publishedFile: "{projectRoot}/Assets/{assetId}/{task}/publishs/{version}/{file}"
+    delivery: "{projectRoot}/Assets/{assetId}/{task}/delivery"
+    deliveryFile: "{projectRoot}/Assets/{assetId}/{task}/delivery/{file}"
+    
+User:
+    parent: "{projectRoot}/Users"
+    root: "{projectRoot}/Users/{userId}"
+    id: "{projectRoot}/Users/{userId}/id.json"
+
+Show:
+    parent: "{projectRoot}/Shows"
+    root: "{projectRoot}/Shows/{showId}"
+    id: "{projectRoot}/Shows/{showId}/id.json"
+    episodes: "{projectRoot}/Shows/{showId}/episodes"
+    delivery: "{projectRoot}/Shows/{showId}/delivery"
+    deliveryFile: "{projectRoot}/Shows/{showId}/delivery/{file}"
+    editorial: "{projectRoot}/Shows/{showId}/editorial"
+    preproduction: "{projectRoot}/Shows/{showId}/preproduction"
+
+Episode:
+    parent: "{projectRoot}/Shows/{showId}/episodes"
+    root: "{projectRoot}/Shows/{showId}/episodes/{episodeId}"
+    id: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/id.json"
+    delivery: "{projectRoot}/Shows/{showId}/delivery/{episodeId}"
+    deliveryFile: "{projectRoot}/Shows/{showId}/delivery/{episodeId}/{file}"
+
+Sequence:
+    parent: "{projectRoot}/Shows/{showId}/episodes/{episodeId}"
+    root: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}"
+    id: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/id.json"
+    delivery: "{projectRoot}/Shows/{showId}/delivery/{episodeId}/{sequenceId}"
+    deliveryFile: "{projectRoot}/Shows/{showId}/delivery/{episodeId}/{sequenceId}/{file}"
+    
+Shot:
+    parent: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}"
+    root: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/{shotId}"
+    id: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/{shotId}/id.json"
+    task: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/{shotId}/{task}"
+    workspace: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/{shotId}/{task}/{dcc}"
+    publishs: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/{shotId}/{task}/publishs"
+    publishedFile: "{projectRoot}/Shows/{showId}/episodes/{episodeId}/{sequenceId}/{shotId}/{task}/publishs/{version}/{file}"
+    delivery: "{projectRoot}/Shows/{showId}/delivery/{episodeId}/{sequenceId}/{shotId}"
+    deliveryFile: "{projectRoot}/Shows/{showId}/delivery/{episodeId}/{sequenceId}/{shotId}/{file}"
