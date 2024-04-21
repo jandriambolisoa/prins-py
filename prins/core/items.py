@@ -504,7 +504,7 @@ class Asset(PrinsItem):
         itemProperties = super().get(projectRoot, datas)
 
         # Return the requested asset as a Prins Asset
-        return cls(projectRoot, id, **itemProperties)
+        return cls(projectRoot, id=id, **itemProperties)
     
 
     @classmethod
