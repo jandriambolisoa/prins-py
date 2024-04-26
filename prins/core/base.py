@@ -19,3 +19,5 @@ class PrinsObject:
 
     def __str__(self):
         return str("<Prins Object : %s>"%(self.__class__.__name__))
+
+# that's all folks #

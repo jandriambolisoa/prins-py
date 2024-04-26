@@ -1,0 +1,70 @@
+Version:
+  Date: 20240425
+
+Asset:
+  create: 1
+  delete: 2
+  get: 1
+  search: 0
+  getFromPath: 1
+  publish: 1
+  save: 1
+  deliver: 1
+  modify: 1
+
+Show:
+  create: 1
+  delete: 2
+  get: 1
+  search: 0
+  getFromPath: 1
+  publish: 1
+  save: 1
+  deliver: 1
+  modify: 1
+
+Episode:
+  create: 1
+  delete: 2
+  get: 1
+  search: 0
+  getFromPath: 1
+  publish: 1
+  save: 1
+  deliver: 1
+  modify: 1
+
+Sequence:
+  create: 1
+  delete: 2
+  get: 1
+  search: 0
+  getFromPath: 1
+  publish: 1
+  save: 1
+  deliver: 1
+  modify: 1
+
+Shot:
+  create: 1
+  delete: 2
+  get: 1
+  search: 0
+  getFromPath: 1
+  publish: 1
+  save: 1
+  deliver: 1
+  modify: 1
+
+User:
+  create: 2
+  delete: 2
+  get: 1
+  search: 0
+  getFromAlias: 1
+  addAlias: 2
+  removeAlias: 2
+  setRank: 2
+  promote: 2
+  downgrade: 2
+  

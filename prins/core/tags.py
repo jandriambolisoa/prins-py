@@ -188,3 +188,6 @@ class Rank(PrinsTag):
     
     def __init__(self):
         super().__init__()
+
+
+# that's all folks #
