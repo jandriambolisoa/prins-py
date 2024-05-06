@@ -380,6 +380,7 @@ class Asset(PrinsItem):
                  status = [Status.kNone],
                  showId = [],
                  description = "No description.",
+                 variations = [],
                  userDatas = {}):
         
         super().__init__(projectRoot)
@@ -389,6 +390,7 @@ class Asset(PrinsItem):
         self.status = status
         self.showId = showId
         self.description = description
+        self.variations = variations
         self.userDatas = userDatas
 
     @classmethod
@@ -399,6 +401,7 @@ class Asset(PrinsItem):
                status = [Status.kAssetStandBy],
                showId = [],
                description = "No description.",
+               variations = ["",],
                userDatas = {}):
         """Creates an Asset in the Prins Pipeline.
 
@@ -419,6 +422,8 @@ class Asset(PrinsItem):
         :type showId: list(str,), optional
         :param description: A description of the item, defaults to "No description."
         :type description: str, optional
+        :param variations: Existing variations of this asset
+        :type variations: list(str,), optional
         :param userDatas: Prins items can handle arbitrary datas.
         The userDatas arg is a dict containing those, defaults to {}
         :type userDatas: dict, optional
@@ -431,8 +436,8 @@ class Asset(PrinsItem):
         # Sanity check
         if not isinstance(projectRoot, str) or not isinstance(id, str) or not isinstance(description, str):
             raise TypeError("projectRoot, id and description args must be of type string")
-        if not isinstance(category, list) or not isinstance(showId, list):
-            raise TypeError("category and showId args must be lists")
+        if not isinstance(category, list) or not isinstance(showId, list) or not isinstance(variations, list):
+            raise TypeError("category, showId and variations args must be lists")
         if not status in Status._listValues():
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
@@ -451,6 +456,7 @@ class Asset(PrinsItem):
             "category" : category,
             "status" : status,
             "showId" : showId,
+            "variations" : variations,
             "description" : description,
             "userDatas" : userDatas
         }
@@ -595,7 +601,7 @@ class Asset(PrinsItem):
         generated filepath.
         :type func: function
         """
-        def _publishAsset(projectRoot, id, task, version, fileTemplate):
+        def _publishAsset(projectRoot, id, task, version, fileTemplate, variation = "", override = False):
             """A submethod that generate a filepath, and then execute
             the decorator function.
 
@@ -616,6 +622,7 @@ class Asset(PrinsItem):
             datas = {
                 "projectRoot" : projectRoot,
                 "assetId" : id,
+                "variation" : variation,
                 "task" : task,
                 "version" : version
             }
@@ -624,7 +631,10 @@ class Asset(PrinsItem):
             # Generate publish filepath
             publishFilepath = super().publish(projectRoot, datas, item, fileTemplate)
 
-            func(publishFilepath)
+            func(publishFilepath, fileTemplate, override)
+
+            # Open folder
+            os.startfile(os.path.split(publishFilepath))
 
         return _publishAsset
 
@@ -663,7 +673,10 @@ class Asset(PrinsItem):
             # Generate workspace path
             workspacePath = super().save(projectRoot, datas, item)
 
-            func(workspacePath)
+            func(workspacePath, item)
+
+            # Open folder
+            os.startfile(workspacePath)
         
         return _saveAsset
     
@@ -677,7 +690,7 @@ class Asset(PrinsItem):
         generated filepath.
         :type func: function
         """
-        def _deliverAsset(projectRoot, id, task, version, fileTemplate):
+        def _deliverAsset(projectRoot, id, task, version, fileTemplate, size = [1920,1080]):
             """A submethod that generate a filepath, and then execute
             the decorator function.
 
@@ -691,6 +704,8 @@ class Asset(PrinsItem):
             :type version: str
             :param fileTemplate: The file template name to generate
             :type fileTemplate: str
+            :param size: Delivery files are movie files and have an image size, defaults to [1920,1080]
+            :type size: list(int,int), optional
             """
 
             datas = {
@@ -704,7 +719,10 @@ class Asset(PrinsItem):
             # Generate delivery filepath
             deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
 
-            func(deliveryFilepath)
+            func(deliveryFilepath, fileTemplate, size)
+
+            # Open folder
+            os.startfile(os.path.split(deliveryFilepath)[0])
 
         return _deliverAsset
     
@@ -736,6 +754,7 @@ class Asset(PrinsItem):
             "category" : self.category,
             "status" : self.status,
             "showId" : self.showId,
+            "variations" : self.variations,
             "description" : self.description,
             "userDatas" : self.userDatas
         }
@@ -763,6 +782,7 @@ class Show(PrinsItem):
                  category = [Category.kNone],
                  status = [Status.kNone],
                  description = "No description.",
+                 imageFormat = [1920,1080],
                  userDatas = {}):
         
         super().__init__(projectRoot)
@@ -771,6 +791,7 @@ class Show(PrinsItem):
         self.category = category
         self.status = status
         self.description = description
+        self.imageFormat = imageFormat
         self.userDatas = userDatas
 
     @classmethod
@@ -780,6 +801,7 @@ class Show(PrinsItem):
                category = [Category.kShort],
                status = [Status.kShowStandBy],
                description = "No description.",
+               imageFormat = [1920,1080],
                userDatas = {}):
         """Creates a Show in the Prins Pipeline.
 
@@ -797,6 +819,8 @@ class Show(PrinsItem):
         :type status: list(Status.property), optional
         :param description: A description of the item, defaults to "No description."
         :type description: str, optional
+        :param imageFormat: The image format of this show, defaults to [1920,1080]
+        :type imageFormat: list(int,int), optional
         :param userDatas: Prins items can handle arbitrary datas.
         The userDatas arg is a dict containing those, defaults to {}
         :type userDatas: dict, optional
@@ -815,6 +839,8 @@ class Show(PrinsItem):
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
             raise TypeError("userDatas arg must be of type dict")
+        if not isinstance(imageFormat, list) or not len(imageFormat) == 2 or not isinstance(imageFormat[0], int):
+            raise TypeError("imageFormat arg is invalid, must be of type [int,int]")
         for c in category:
             if not c in Category._listValues():
                 raise ValueError("category arg must contain properties of the Category class")
@@ -829,6 +855,7 @@ class Show(PrinsItem):
             "category" : category,
             "status" : status,
             "description" : description,
+            "imageFormat" : imageFormat,
             "userDatas" : userDatas
         }
 
@@ -980,7 +1007,7 @@ class Show(PrinsItem):
         generated filepath.
         :type func: function
         """
-        def _deliverShow(projectRoot, id, task, version, fileTemplate):
+        def _deliverShow(projectRoot, id, task, version, fileTemplate, size = [1920,1080]):
             """A submethod that generate a filepath, and then execute
             the decorator function.
 
@@ -994,6 +1021,8 @@ class Show(PrinsItem):
             :type version: str
             :param fileTemplate: The file template name to generate
             :type fileTemplate: str
+            :param size: Delivery files are movie files and have an image size, defaults to [1920,1080]
+            :type size: list(int,int), optional
             """
 
             datas = {
@@ -1007,7 +1036,10 @@ class Show(PrinsItem):
             # Generate delivery filepath
             deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
 
-            func(deliveryFilepath)
+            func(deliveryFilepath, fileTemplate, size)
+
+            # Open folder
+            os.startfile(os.path.split(deliveryFilepath)[0])
 
         return _deliverShow
     
@@ -1038,6 +1070,7 @@ class Show(PrinsItem):
             "category" : self.category,
             "status" : self.status,
             "description" : self.description,
+            "imageFormat" : self.imageFormat,
             "userDatas" : self.userDatas
         }
 
@@ -1287,7 +1320,7 @@ class Episode(PrinsItem):
         generated filepath.
         :type func: function
         """
-        def _deliverEpisode(projectRoot, parentShow, id, task, version, fileTemplate):
+        def _deliverEpisode(projectRoot, parentShow, id, task, version, fileTemplate, size = [1920,1080]):
             """A submethod that generate a filepath, and then execute
             the decorator function.
 
@@ -1303,6 +1336,8 @@ class Episode(PrinsItem):
             :type version: str
             :param fileTemplate: The file template name to generate
             :type fileTemplate: str
+            :param size: Delivery files are movie files and have an image size, defaults to [1920,1080]
+            :type size: list(int,int), optional
             """
 
             datas = {
@@ -1317,9 +1352,10 @@ class Episode(PrinsItem):
             # Generate delivery filepath
             deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
 
-            func(deliveryFilepath)
+            func(deliveryFilepath, fileTemplate, size)
 
-            super().deliver(projectRoot, datas, item, fileTemplate)
+            # Open folder
+            os.startfile(os.path.split(deliveryFilepath)[0])
 
         return _deliverEpisode
     
@@ -1616,7 +1652,7 @@ class Sequence(PrinsItem):
         generated filepath.
         :type func: function
         """
-        def _deliverSequence(projectRoot, parentShow, parentEpisode, id, task, version, fileTemplate):
+        def _deliverSequence(projectRoot, parentShow, parentEpisode, id, task, version, fileTemplate, size = [1920,1080]):
             """A submethod that generate a filepath, and then execute
             the decorator function.
 
@@ -1634,6 +1670,8 @@ class Sequence(PrinsItem):
             :type version: str
             :param fileTemplate: The file template name to generate
             :type fileTemplate: str
+            :param size: Delivery files are movie files and have an image size, defaults to [1920,1080]
+            :type size: list(int,int), optional
             """
 
             datas = {
@@ -1649,9 +1687,10 @@ class Sequence(PrinsItem):
             # Generate delivery filepath
             deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
 
-            func(deliveryFilepath)
+            func(deliveryFilepath, fileTemplate, size)
 
-            super().deliver(projectRoot, datas, item, fileTemplate)
+            # Open folder
+            os.startfile(os.path.split(deliveryFilepath)[0])
 
         return _deliverSequence
     
@@ -2059,7 +2098,7 @@ class Shot(PrinsItem):
         generated filepath.
         :type func: function
         """
-        def _deliverShot(projectRoot, parentShow, parentEpisode, parentSequence, id, task, version, fileTemplate):
+        def _deliverShot(projectRoot, parentShow, parentEpisode, parentSequence, id, task, version, fileTemplate, size = [1920,1080]):
             """A submethod that generate a filepath, and then execute
             the decorator function.
 
@@ -2079,6 +2118,8 @@ class Shot(PrinsItem):
             :type version: str
             :param fileTemplate: The file template name to generate
             :type fileTemplate: str
+            :param size: Delivery files are movie files and have an image size, defaults to [1920,1080]
+            :type size: list(int,int), optional
             """
 
             datas = {
@@ -2095,7 +2136,10 @@ class Shot(PrinsItem):
             # Generate delivery filepath
             deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
 
-            func(deliveryFilepath)
+            func(deliveryFilepath, fileTemplate, size)
+
+            # Open folder
+            os.startfile(os.path.split(deliveryFilepath)[0])
 
         return _deliverShot
     

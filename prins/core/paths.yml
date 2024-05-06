@@ -18,11 +18,11 @@
 Files:
     # Working file format
     # Asset
-    mayaAsset: "{task}_{assetId}_{version}.ma"
-    houdiniAsset: "{task}_{assetId}_{version}.hip"
-    painterAsset: "{task}_{assetId}_{version}.spp"
-    guerillaAsset: "{task}_{assetId}_{version}.gproject"
-    ueAsset: "{task}_{assetId}_{version}.uproject"
+    mayaAsset: "{task}_{assetId}{variation}_{version}.ma"
+    houdiniAsset: "{task}_{assetId}{variation}_{version}.hip"
+    painterAsset: "{task}_{assetId}{variation}_{version}.spp"
+    guerillaAsset: "{task}_{assetId}{variation}_{version}.gproject"
+    ueAsset: "{task}_{assetId}{variation}_{version}.uproject"
 
     # Shot
     mayaShot: "{task}_{showId}_{episodeId}_{sequenceId}_{shotId}_{version}.ma"
@@ -34,12 +34,14 @@ Files:
 
     # Publish file format
     # Asset
-    assetAlembic: "{task}_{assetId}_{version}.abc"
-    assetFbx: "{task}_{assetId}_{version}.fbx"
-    texturesExr: "{task}_{assetId}_{version}.{UDIM}.exr"
-    grendergraph: "{task}_{assetId}_{version}.grendergraph"
-    movAsset: "{task}_{assetId}_{version}.mov"
-    mp4Asset: "{task}_{assetId}_{version}.mp4"
+    assetAlembic: "{task}_{assetId}{variation}_{version}.abc"
+    assetFbx: "{task}_{assetId}{variation}_{version}.fbx"
+    assetAss: "{task}_{assetId}{variation}_{version}.ass"
+    assetAssWithLOD: "{task}_{assetId}{variation}_{version}.{LOD}.ass"
+    texturesExr: "{task}_{assetId}{variation}_{version}.{UDIM}.exr"
+    grendergraph: "{task}_{assetId}{variation}_{version}.grendergraph"
+    movAsset: "{task}_{assetId}{variation}_{version}.mov"
+    mp4Asset: "{task}_{assetId}{variation}_{version}.mp4"
 
     # Show
     movEpisode: "{task}_{showId}_{version}.mov"

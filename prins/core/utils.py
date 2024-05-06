@@ -28,9 +28,11 @@ class PathFinder:
             "projectRoot": self.projectRoot,
             "task": None,
             "assetId": None,
+            "variation" : None,
             "userId": None,
             "version": None,
             "iteration": None,
+            "LOD" : None,
             "UDIM": None,
             "showId": None,
             "episodeId": None,
@@ -177,11 +179,32 @@ class PathFinder:
             raise TypeError("The input arg must be a string")
         
         # Update datas
-        data = {"assetId":input}
+        data = {"assetId":input,
+                "variation" : ""}
         self.setDatas(data)
 
         return self
     
+
+    def update_variation(self, input):
+        """Update the variation key from the self.datas with the user input
+
+        :param input: variation as a string
+        :type input: str
+        :raises TypeError: Raises an error if the input is of the wrong type
+        :return: The current instance of PathFinder
+        :rtype: self
+        """
+
+        # Make sure the input is an str
+        if not isinstance(input, str):
+            raise TypeError("The input arg must be a string")
+        
+        # Update datas
+        data = {"variation":input}
+        self.setDatas(data)
+
+        return self
 
     def update_userId(self, input):
         """Update the userId key from the self.datas with the user input
@@ -203,7 +226,7 @@ class PathFinder:
         return self
 
 
-    def update_version(self):
+    def update_version(self, input):
         """Update the version key from the self.datas with the user input
 
         :param input: version as an integer
@@ -229,13 +252,13 @@ class PathFinder:
         return self
 
 
-    def update_iteration(self, input):
-        """Update the iteration key from the self.datas with the user input
+    def update_LOD(self, input):
+        """Update the LOD level key from the self.datas with the user input
 
-        :param input: iteration as an integer
+        :param input: LOD level as an integer
         :type input: int
         :raises TypeError: Raises an error if the input is of the wrong type
-        :raises ValueError: Raises an error if the input is not between 0 and 999
+        :raises ValueError: Raises an error if the input is not between 0 and 9
         :return: The current instance of PathFinder
         :rtype: self
         """
@@ -244,12 +267,12 @@ class PathFinder:
             raise TypeError("The input arg must be an integer")
         
         # Convert the input to a string
-        if input < 0 or input > 999:
-            raise ValueError("The iteration must be between 0 and 999")
-        input = "%03d"%input
+        if input < 0 or input > 9:
+            raise ValueError("The LOD level must be between 0 and 9")
+        input = "LOD%s"%input
 
         # Update datas
-        data = {"iteration":input}
+        data = {"LOD":input}
         self.setDatas(data)
 
         return self
@@ -400,6 +423,33 @@ class PathFinder:
         self.setDatas(data)
 
         return self
+    
+
+    def increment_LOD(self, value = 1):
+        """Update the LOD level value
+
+        :param value: Incrementation amount, defaults to 1
+        :type value: int, optional
+        :raises Exception: Raises an error if self.datas has no version yet
+        :return: The current instance of PathFinder
+        :rtype: self
+        """
+        # Check if the datas contains a version
+        if not self.datas["version"]:
+            raise Exception("No version found in the datas")
+        
+        newLOD = int(self.datas["LOD"].lstrip("LOD"))
+        newLOD += value
+
+        if newLOD < 0 or newLOD > 9:
+            raise ValueError("Maximum or minimum LOD reached.")
+
+        newLOD = "LOD%s"%newLOD
+
+        data = {"LOD": newLOD}
+        self.setDatas(data)
+
+        return self
 
 
     def increment_UDIM(self, value = 1):
@@ -547,8 +597,10 @@ class PathFinder:
                 "projectRoot": None,
                 "task": None,
                 "assetId": None,
+                "variation" : None,
                 "version": None,
                 "iteration": None,
+                "LOD" : None,
                 "UDIM": None,
                 "showId": None,
                 "episodeId": None,
@@ -583,7 +635,7 @@ class PathFinder:
                 raise Exception("An error occured. Datas might be incomplete or wrong")
 
         try:
-            result = os.path.normpath(self.pathTemplate.format(**self.datas))
+            result = os.path.normpath(pathTemplate.format(**self.datas))
             return result
         except:
             raise Exception("An error occured. Datas might be incomplete or wrong")
@@ -604,7 +656,7 @@ class PathFinder:
             paths = yaml.safe_load(f)
 
         # Get the requested template
-        request = paths[self.templateType].get(self.templateName, "Unknown")
+        request = paths[type].get(name, "Unknown")
         if request == "Unknown":
             raise ValueError("The template is not recognized.")
         

@@ -1,4 +1,12 @@
-# prins-py
-The python API to manage a project in the PRINS Pipeline.
+# Prins API Python module
+The module is available as the `prins` folder.
 
-This repository is a submodule of [PRINS](https://github.com/jandriambolisoa/PRINS), the Prince Animation Framework.
+## prins
+Contains the heart of the pipeline.
+Where the normalized paths are coded and generated.
+
+## logs
+Contains logs.
+
+## docs
+Contains docs.
