@@ -19,7 +19,7 @@ class PrinsTag(PrinsObject):
 
         self.id = None
 
-    def asString(self):
+    def asString(self, kValue = 0):
         """Returns the string version of an item variable
 
         :param kValue: Key value
@@ -27,6 +27,10 @@ class PrinsTag(PrinsObject):
         :return: The key as a text
         :rtype: string
         """
+
+        if not self.id:
+            self.id = kValue
+
         # Import labels yaml file as a dict
         folderpath, filename = os.path.split(os.path.normpath(__file__))
         labelsPath = os.path.join(folderpath, "labels.yml")

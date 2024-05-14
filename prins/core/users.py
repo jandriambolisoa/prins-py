@@ -6,6 +6,7 @@
 from .base      import PrinsObject
 from .utils     import PathFinder
 from .items     import PrinsItem
+from .items     import Show
 from .tags      import Rank
 
 import os
@@ -133,6 +134,7 @@ class User(PrinsUser):
                  id = None,
                  aliases = [],
                  rank = None,
+                 shows = [],
                  clef = None):
         
         super().__init__(projectRoot)
@@ -140,6 +142,7 @@ class User(PrinsUser):
         self.id = id
         self.aliases = aliases
         self.rank = rank
+        self.shows = shows
         self.clef = clef
 
 
@@ -149,6 +152,7 @@ class User(PrinsUser):
                id,
                aliases,
                rank,
+               shows,
                clef):
         """Creates a User in the Prins Pipeline.
 
@@ -163,6 +167,8 @@ class User(PrinsUser):
         :type aliases: list(str)
         :param rank: A rank determines the permissions of this user.
         :type rank: Rank.property
+        :param shows: This user property determines the shows he has access to
+        :type shows: A list of shows
         :param clef: The clef is a hashed string used for login purposes.
         :type clef: str
         :raises TypeError: Raises an error if an argument is of the wrong type.
@@ -174,8 +180,8 @@ class User(PrinsUser):
         # Sanity check
         if not isinstance(projectRoot, str) or not isinstance(id, str) or not isinstance(clef, str):
             raise TypeError("projectRoot, id and clef args must be of type string")
-        if not isinstance(aliases, list):
-            raise TypeError("aliases arg must be a list of strings")
+        if not isinstance(aliases, list) or not isinstance(shows, list):
+            raise TypeError("aliases and shows arg must be a list of strings")
         if not rank in Rank._listValues():
             raise ValueError("rank arg must be a property of the Rank class")
 
@@ -188,6 +194,7 @@ class User(PrinsUser):
         userProperties = {
             "aliases" : aliases,
             "rank" : rank,
+            "shows" : shows,
             "clef" : clef
         }
 
@@ -351,6 +358,7 @@ class User(PrinsUser):
         userProperties = {
             "aliases" : self.aliases,
             "rank" : self.rank,
+            "shows" : self.shows,
             "clef" : self.clef
         }
 
@@ -381,6 +389,7 @@ class User(PrinsUser):
         userProperties = {
             "aliases" : self.aliases,
             "rank" : self.rank,
+            "shows" : self.shows,
             "clef" : self.clef
         }
 
@@ -415,6 +424,7 @@ class User(PrinsUser):
         userProperties = {
             "aliases" : self.aliases,
             "rank" : self.rank,
+            "shows" : self.shows,
             "clef" : self.clef
         }
 
@@ -442,6 +452,7 @@ class User(PrinsUser):
         userProperties = {
             "aliases" : self.aliases,
             "rank" : self.rank,
+            "shows" : self.shows,
             "clef" : self.clef
         }
 
@@ -469,10 +480,72 @@ class User(PrinsUser):
         userProperties = {
             "aliases" : self.aliases,
             "rank" : self.rank,
+            "shows" : self.shows,
             "clef" : self.clef
         }
 
         return super().modify(datas, userProperties)
 
     
+    def addShow(self, show):
+        """Adds a show to this user.
+
+        :param show: Show to add
+        :type show: str
+        :raises TypeError: alias arg must be of type string
+        :return: self
+        :rtype: User() object
+        """
+
+        # Sanity check
+        if not isinstance(show, str):
+            raise TypeError("show arg must be of type string.")
+
+        datas = {
+            "projectRoot" : self.projectRoot,
+            "userId" : self.id
+        }
+
+        self.shows.append(show)
+
+        userProperties = {
+            "aliases" : self.aliases,
+            "rank" : self.rank,
+            "shows" : self.shows,
+            "clef" : self.clef
+        }
+
+        return super().modify(datas, userProperties)
+
+
+    def removeShow(self, show):
+        """Removes a show to this user.
+
+        :param alias: Show to remove
+        :type alias: str
+        :raises TypeError: show arg must be of type string
+        :return: self
+        :rtype: User() object
+        """
+
+        # Sanity check
+        if not isinstance(show, str):
+            raise TypeError("alias arg must be of type string.")
+        
+        datas = {
+            "projectRoot" : self.projectRoot,
+            "userId" : self.id
+        }
+
+        self.aliases.remove(show)
+
+        userProperties = {
+            "aliases" : self.aliases,
+            "rank" : self.rank,
+            "shows" : self.shows,
+            "clef" : self.clef
+        }
+
+        return super().modify(datas, userProperties)
+
 # that's all folks #
