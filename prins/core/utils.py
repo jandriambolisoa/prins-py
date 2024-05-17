@@ -28,7 +28,7 @@ class PathFinder:
             "projectRoot": self.projectRoot,
             "task": None,
             "assetId": None,
-            "variation" : None,
+            "variation" : "",
             "userId": None,
             "version": None,
             "iteration": None,
@@ -38,7 +38,8 @@ class PathFinder:
             "episodeId": None,
             "sequenceId": None,
             "shotId": None,
-            "dcc": None
+            "dcc": None,
+            "file": None
         }
 
     def __str__(self):
@@ -517,7 +518,11 @@ class PathFinder:
 
         for i in range(len(userKeys)):
             if templateKeys[i].find("{") > -1:
-                key = templateKeys[i].strip("{ }")
+                # Exception for the variation
+                if "}{" in templateKeys[i]:
+                    key = templateKeys[i].split("}")[0].lstrip("{")
+                else:
+                    key = templateKeys[i].strip("{ }")
                 value = userKeys[i]
 
                 extractedDatas[key] = value
@@ -553,7 +558,8 @@ class PathFinder:
         # Parse the path
         # Split path and template into a list
         rootlessPath = path.lstrip(self.datas["projectRoot"])
-        userKeys = rootlessPath.split("\\").insert(0, self.datas["projectRoot"])
+        userKeys = rootlessPath.split("\\")
+        userKeys.insert(0, self.datas["projectRoot"])
 
         template = self._getTemplate(self.templateType, self.templateName)
         templateKeys = template.split("/")
@@ -566,7 +572,7 @@ class PathFinder:
 
         for i in range(len(userKeys)):
             if templateKeys[i].find("{") > -1:
-                key = templateKeys.strip("{ }")
+                key = templateKeys[i].strip("{ }")
                 value = userKeys[i]
 
                 extractedDatas[key] = value
@@ -606,7 +612,8 @@ class PathFinder:
                 "episodeId": None,
                 "sequenceId": None,
                 "shotId": None,
-                "dcc": None
+                "dcc": None,
+                "file" : None
             }
 
         return self

@@ -438,7 +438,7 @@ class Asset(PrinsItem):
             raise TypeError("projectRoot, id and description args must be of type string")
         if not isinstance(category, list) or not isinstance(showId, list) or not isinstance(variations, list):
             raise TypeError("category, showId and variations args must be lists")
-        if not status in Status._listValues():
+        if not status[0] in Status._listValues():
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
             raise TypeError("userDatas arg must be of type dict")
@@ -629,12 +629,12 @@ class Asset(PrinsItem):
             item = "Asset"
 
             # Generate publish filepath
-            publishFilepath = super().publish(projectRoot, datas, item, fileTemplate)
+            publishFilepath = PrinsItem.publish(projectRoot, datas, item, fileTemplate)
 
             func(publishFilepath, fileTemplate, override)
 
             # Open folder
-            os.startfile(os.path.split(publishFilepath))
+            os.startfile(os.path.split(publishFilepath)[0])
 
         return _publishAsset
 
@@ -665,13 +665,14 @@ class Asset(PrinsItem):
             datas = {
                 "projectRoot" : projectRoot,
                 "assetId" : id,
+                "variation" : "",
                 "task" : task,
                 "dcc" : dcc
             }
             item = "Asset"
 
             # Generate workspace path
-            workspacePath = super().save(projectRoot, datas, item)
+            workspacePath = PrinsItem.save(projectRoot, datas, item)
 
             func(workspacePath, item)
 
@@ -711,13 +712,15 @@ class Asset(PrinsItem):
             datas = {
                 "projectRoot" : projectRoot,
                 "assetId" : id,
+                "variation" : "",
                 "task" : task,
                 "version" : version
             }
+
             item = "Asset"
 
             # Generate delivery filepath
-            deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
+            deliveryFilepath = PrinsItem.deliver(projectRoot, datas, item, fileTemplate)
 
             func(deliveryFilepath, fileTemplate, size)
 
@@ -835,7 +838,7 @@ class Show(PrinsItem):
             raise TypeError("projectRoot, id and description args must be of type string")
         if not isinstance(category, list):
             raise TypeError("category arg must be list")
-        if not status in Status._listValues():
+        if not status[0] in Status._listValues():
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
             raise TypeError("userDatas arg must be of type dict")
@@ -1034,7 +1037,7 @@ class Show(PrinsItem):
             item = "Show"
 
             # Generate delivery filepath
-            deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
+            deliveryFilepath = PrinsItem.deliver(projectRoot, datas, item, fileTemplate)
 
             func(deliveryFilepath, fileTemplate, size)
 
@@ -1143,7 +1146,7 @@ class Episode(PrinsItem):
         # Sanity check
         if not isinstance(projectRoot, str) or not isinstance(id, str) or not isinstance(description, str) or not isinstance(parentShow, str):
             raise TypeError("projectRoot, id, parentShow and description args must be of type string")
-        if not status in Status._listValues():
+        if not status[0] in Status._listValues():
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
             raise TypeError("userDatas arg must be of type dict")
@@ -1350,7 +1353,7 @@ class Episode(PrinsItem):
             item = "Episode"
 
             # Generate delivery filepath
-            deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
+            deliveryFilepath = PrinsItem.deliver(projectRoot, datas, item, fileTemplate)
 
             func(deliveryFilepath, fileTemplate, size)
 
@@ -1463,7 +1466,7 @@ class Sequence(PrinsItem):
         # Sanity check
         if not isinstance(projectRoot, str) or not isinstance(id, str) or not isinstance(description, str) or not isinstance(parentShow, str) or not isinstance(parentEpisode, str):
             raise TypeError("projectRoot, id, parentShow and description args must be of type string")
-        if not status in Status._listValues():
+        if not status[0] in Status._listValues():
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
             raise TypeError("userDatas arg must be of type dict")
@@ -1685,7 +1688,7 @@ class Sequence(PrinsItem):
             item = "Sequence"
 
             # Generate delivery filepath
-            deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
+            deliveryFilepath = PrinsItem.deliver(projectRoot, datas, item, fileTemplate)
 
             func(deliveryFilepath, fileTemplate, size)
 
@@ -1805,7 +1808,7 @@ class Shot(PrinsItem):
         # Sanity check
         if not isinstance(projectRoot, str) or not isinstance(id, str) or not isinstance(description, str) or not isinstance(parentShow, str) or not isinstance(parentEpisode, str) or not isinstance(parentSequence, str):
             raise TypeError("projectRoot, id and description args must be of type string")
-        if not status in Status._listValues():
+        if not status[0] in Status._listValues():
             raise ValueError("status arg must be a property of the Status class")
         if not isinstance(userDatas, dict):
             raise TypeError("userDatas arg must be of type dict")
@@ -2034,9 +2037,12 @@ class Shot(PrinsItem):
             item = "Shot"
 
             # Generate publish filepath
-            publishFilepath = super().publish(projectRoot, datas, item, fileTemplate)
+            publishFilepath = PrinsItem.publish(projectRoot, datas, item, fileTemplate)
 
             func(publishFilepath)
+
+            # Open folder
+            os.startfile(os.path.split(publishFilepath)[0])
 
         return _publishShot
 
@@ -2082,7 +2088,7 @@ class Shot(PrinsItem):
             item = "Shot"
 
             # Generate workspace path
-            workspacePath = super().save(projectRoot, datas, item)
+            workspacePath = PrinsItem.save(projectRoot, datas, item)
 
             func(workspacePath)
         
@@ -2134,7 +2140,7 @@ class Shot(PrinsItem):
             item = "Shot"
 
             # Generate delivery filepath
-            deliveryFilepath = super().deliver(projectRoot, datas, item, fileTemplate)
+            deliveryFilepath = PrinsItem.deliver(projectRoot, datas, item, fileTemplate)
 
             func(deliveryFilepath, fileTemplate, size)
 
